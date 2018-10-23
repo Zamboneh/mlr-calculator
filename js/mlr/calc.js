@@ -10,109 +10,83 @@ function getDifference(pitch, swing) {
 }
 
 function getResult(pitcher, pitch, batter, swing) {
-
-    if (pitcher.pitcherType == null || pitcher.hand == null || batter.hitterType == null || batter.hand == null) {
-        return null;
-    }
-
     var diff = getDifference(pitch, swing);
 
-    var pitcherType, hand;
-    if (pitcher.pitcherType == 'Position') {
-        pitcherType = "Balanced";
-        hand = "different";
-    } else {
-        pitcherType = pitcher.pitcherType;
-        if (pitcher.hand == batter.hand)
-            hand = "same";
-        else
-            hand = "different";
+    // 1. get batter/pitcher ranges
+    // 2. combine ranges
+    // 3. calculate any modifiers to ranges (TODO)
+    // 4. look up diff in final range
+
+    var batterRange = window.batterRanges[batter.types.batter];
+    console.log("batter range...");
+    console.log(batterRange);
+    var pitcherRange = window.pitcherRanges[pitcher.types.pitcher];
+    console.log("pitcher range...");
+    console.log(pitcherRange);
+    var handRange = window.handRanges[pitcher.types.bonus];
+    console.log("hand range...");
+    console.log(handRange);
+
+    finalRange = combineRanges(batterRange, pitcherRange);
+    if (pitcher.hand == batter.hand) {
+        finalRange = combineRanges(finalRange, handRange);
+    }
+    console.log("Combined...");
+    console.log(finalRange);
+
+    var diffCounter = diff;
+    var finalResult;
+    var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
+    for (var i = 0; i < fields.length; i++) {
+        var abResult = fields[i];
+        diffCounter -= finalRange[abResult];
+        if (diffCounter <= 0) {
+            finalResult = abResult;
+            break;
+        }
     }
 
-    var batterType = batter.hitterType;
+    return {
+        result: finalResult,
+        diff: diff,
+        range: finalRange
+    };
+}
 
-    var abRow = results_dict[pitcherType][batterType][hand];
-    for (var i = 0; i < abRow.length; i++) {
+function combineRanges(range1, range2) {
+    // combines outcomes of range1 and range2 and returns a sum range
+    var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
+    var sumRange = {};
+    for (var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        sumRange[field] = getAsNumber(range1[field]) + getAsNumber(range2[field]);
+    }
+    return sumRange;
+}
 
-        if (diff >= abRow[i].start_number && diff <= abRow[i].end_number) {
-            console.log(pitcher);
-            console.log(batter);
-            console.log(pitcherType);
-            console.log(batterType);
-            console.log(hand);
-            console.log(abRow[i]);
-            return abRow[i];
-        }
+function getAsNumber(input) {
+    var inputType = typeof(input);
+    if (inputType == "string") {
+        return parseInt(input);
+    } else if (inputType == "number") {
+        return input;
     }
     return null;
 }
 
-function doCalc() {
-    console.log("Doing calc");
-    var pitcherName = $('#pitcherText').val();
-    var batterName = $('#batterText').val();
-
-    pitcherName = pitcherName.slice(0, pitcherName.indexOf("(") - 1);
-    batterName = batterName.slice(0, batterName.indexOf("(") - 1);
-
-    // lookup
-    var pitcher;
-    for (var i = 0; i < window.playerList.length; i++) {
-        if (pitcherName == window.playerList[i].name) {
-            pitcher = window.playerList[i];
-            break;
-        }
-    }
-    if (!pitcher) {
-        $('#result').html('Pitcher not found');
-        return;
-    }
-
-    var batter;
-    for (var i = 0; i < window.playerList.length; i++) {
-        if (batterName == window.playerList[i].name) {
-            batter = window.playerList[i];
-            break;
-        }
-    }
-    if (!batter) {
-        $('#result').html('Batter not found');
-        return;
-    }
-    
+function doCalc() {    
     var pitch = parseInt($('#pitcherNumber').val());
     var swing = parseInt($('#batterNumber').val());
 
-    var result = getResult(pitcher, pitch, batter, swing);
-    var diff = getDifference(pitch, swing);
+    var result = getResult(window.currentPitcher, pitch, window.currentBatter, swing);
 
     if (result == null) {
         $('#result').html("Methinks one of these players is missing a type or hand...");
     } else {
-        $('#result').html("Result: " + result.result + " (Diff: " + diff + ")<br/>(" + result.start_number + " - " + result.end_number + ")");
+        $('#result').html("Swing: " + swing + "  <br/>Pitch: " + pitch + "  <br/>Diff: " + result.diff + " -> " + result.result);
     }
 }
 
-function doManualCalc() {
-    // get values
-    var pitcherType = $("input:radio[name ='inlineRadioOptions1']:checked").val();
-    var pitcherHand = $("input:radio[name ='inlineRadioOptions2']:checked").val();
-    var batterType = $("input:radio[name ='inlineRadioOptions3']:checked").val();
-    var batterHand = $("input:radio[name ='inlineRadioOptions4']:checked").val();
-
-    var pitch = parseInt($('.manual-pitcher-number').val());
-    var swing = parseInt($('.manual-batter-number').val());
-
-    if (!pitch || !swing || pitch < 1 || pitch > 1000 || swing < 1 || swing > 1000) {
-        $('#manualResult').html("Invalid numbers!");
-        return;
-    }
-
-    var fakePitcher = {'pitcherType': pitcherType, 'hand': pitcherHand};
-    var fakeBatter = {'batterType': batterType, 'hand': batterHand};
-
-    var result = getResult(fakePitcher, pitch, fakeBatter, swing);
-    var diff = getDifference(pitch, swing);
-
-    $('#manualResult').html("Result: " + result.result + " (Diff: " + diff + ")<br/>(" + result.start_number + " - " + result.end_number + ")");
-}
+// Swing: x
+// Pitch: y
+// Diff: z -> 3B

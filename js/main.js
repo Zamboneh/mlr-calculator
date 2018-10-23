@@ -2,7 +2,7 @@ function init() {
     // do loading indicator and load player data
     $(".loadingContainer").css("display", "block");
 
-    buildPlayerList();
+    getData();
 }
 
 $(init);

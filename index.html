@@ -8,12 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
         <link href="https://fonts.googleapis.com/css?family=Asul|Lobster" rel="stylesheet"> 
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
@@ -26,10 +20,10 @@
     <body>
     
     <!-- Header with title -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">MLR Calculator Redux</a>
+          <a class="navbar-brand" href="#">MLR Calculator: Season 3</a>
         </div>
       </div>
     </nav>
@@ -40,29 +34,30 @@
       <div class="loadText">Pulling players and stats from sheets</div>
     </div>
 
-    <!-- Page tabs -->
-    <div class="container">
-      <nav class="actual-navbar">
-        <ul class="nav nav-tabs">
-          <li role="presentation" id="playerCalcLink" class="active"><a href="#">Player</a></li>
-          <li role="presentation" id="manualCalcLink"><a href="#">Manual</a></li>
-        </ul>
-      </nav>
-    </div>
-
     <!-- NEW PLAYER SEARCH PANEL -->
-    <div id="playerCalcPanel" class="container">
+    <div class="container" style="margin-top:20px">
       <!-- first row: Selection box, list, and badges -->
       <div class="player-container row">
         <!-- first column: pitcher info -->
         <div class="pitcher-box col-md-6">
-          <div id="pitcherInfo" class="row form-group">
-            <h3>Pitcher</h3>
-            <input id="pitcherText" class="form-control input-lg" placeholder="Enter pitcher..."/>
-            <input id="pitcherNumber" class="form-control input-lg" placeholder="Pitch #..."/>
+          <div id="pitcherInfo">
+            <div class="row">
+              <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Pitcher Name</span>
+                </div>
+                <input id="pitcherText" type="text" class="form-control"/>
+              </div>
+              <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Pitch</span>
+                </div>
+                <input id="pitcherNumber" type="text" class="form-control"/>
+              </div>
+            </div>
           </div>
           <div class="row">
-            <span id="pitcherTypeBadge" class="badge"></span><span id="pitcherHandBadge" class="badge"></span>
+            <span id="pitcherTypeBadge" class="badge badge-light"></span><span id="pitcherHandBadge" class="badge badge-light"></span>
           </div>
           <div class="row">
             <ul id="pitcherListItems" class="list-group" style="display:none"></ul>
@@ -70,13 +65,24 @@
         </div>
         <!-- second column: batter info -->
         <div class="batter-box col-md-6">
-          <div id="batterInfo" class="row form-group">
-            <h3>Batter</h3>
-            <input id="batterText" class="form-control input-lg" placeholder="Enter batter..."/>
-            <input id="batterNumber" class="form-control input-lg" placeholder="Swing #..."/>
+          <div id="batterInfo">
+            <div class="row">
+              <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Batter Name</span>
+                </div>
+                <input id="batterText" type="text" class="form-control"/>
+              </div>
+              <div class="input-group input-group-lg mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Swing</span>
+                </div>
+                <input id="batterNumber" type="text" class="form-control"/>
+              </div>
+            </div>
           </div>
           <div class="row">
-            <span id="batterTypeBadge" class="badge"></span><span id="batterHandBadge" class="badge"></span>
+            <span id="batterTypeBadge" class="badge badge-light"></span><span id="batterHandBadge" class="badge badge-light"></span>
           </div>
           <div class="row">
             <ul id="batterListItems" class="list-group" style="display:none"></ul>
@@ -85,77 +91,133 @@
       </div>
       <div class="action-row row">
         <div class="action-buttons col-md-6" style="text-align: center">
-          <a id="calcButton" class="btn btn-default disabled" href="javascript:doCalc();" role="button">Calculate &raquo;</a>
+          <a id="calcButton" class="btn btn-primary disabled" href="javascript:doCalc();" role="button">Calculate &raquo;</a>
         </div>
         <div class="result-box col-md-6">
           <p id="result">Result here.</p>
         </div>
       </div>
+      <!-- Range rows -->
+      <!--
+      <div class="row">
+        <h4>Explanation of Ranges</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col">HR</th>
+              <th scope="col">3B</th>
+              <th scope="col">2B</th>
+              <th scope="col">1B</th>
+              <th scope="col">BB</th>
+              <th scope="col">FO</th>
+              <th scope="col">K</th>
+              <th scope="col">PO</th>
+              <th scope="col">RGO</th>
+              <th scope="col">LGO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Pitcher Range</th>
+              <th scope="row">Three True Outcomes</th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <th scope="row">Batter Range</th>
+              <th scope="row">Some Other Type</th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <th scope="row">Hand Bonus</th>
+              <th scope="row">Anti-Homer</th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+            <tr class="table-primary">
+              <th scope="row">Subtotal</th>
+              <th scope="row"></th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+            <tr>
+              <th scope="row">Park Factor</th>
+              <th scope="row">Generic Baseball Stadium 01</th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+            <tr class="table-primary">
+              <th scope="row">Final Range</th>
+              <th scope="row"></th>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+              <td>13</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <!-- Manual calculator panel -->
-    <div id="manualCalcPanel" class="container" style="display:none">
-      <div class="manual-pitcher-box col-md-6">
-        <h3>Pitcher</h3>
-        <h4>Type</h4>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="balanced" checked> Balanced
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions1" id="inlineRadio2" value="finesse"> Finesse
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions1" id="inlineRadio3" value="strikeout"> Strikeout
-        </label>
-
-        <h4>Hand</h4>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="right" checked> Right
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="left"> Left
-        </label>
-        <input class="form-control input-lg manual-pitcher-number" placeholder="Pitch #..."/>
-      </div>
-      <div class="manual-batter-box col-md-6">
-        <h3>Batter</h3>
-        <h4>Type</h4>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="neutral" checked> Neutral
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions3" id="inlineRadio2" value="contact"> Contact
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="power"> Power
-        </label>
-
-        <h4>Hand</h4>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="right" checked> Right
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions4" id="inlineRadio2" value="left"> Left
-        </label>
-        <input class="form-control input-lg manual-batter-number" placeholder="Swing #..."/>
-      </div>
-      <div class="action-buttons col-md-6" style="text-align: center">
-        <a id="manualCalcButton" class="btn btn-default" href="javascript:doManualCalc();" role="button">Calculate &raquo;</a>
-      </div>
-      <div class="result-box col-md-6">
-        <p id="manualResult">Result here.</p>
-      </div>
-    </div>
-
+  -->
     <!-- Footer -->
-    <div class="footer">
-      &copy; 2018 Zum Boehner Enterprises for /r/fakebaseball, some calculator code &copy; 2017 /u/aviator157
-    </div>
-    <script src="js/vendor/jquery-1.11.2.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark footer">
+      <div class="navbar-text" style="width:100%">
+        &copy; 2018 Zum Boehner Enterprises for /r/fakebaseball, some calculator code &copy; 2017 /u/aviator157
+      </div>
+    </nav>
+    <script src="js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
 
     <!-- JS stuff -->
-    <script src="js/mlr/abResults.js"></script>
     <script src="js/mlr/calc.js"></script>
     <script src="js/mlr/sheets.js"></script>
     <script src="js/mlr/handlers.js"></script>

@@ -67,64 +67,54 @@ $(function(){
 $('#pitcherListItems').click(function(e) {
     if (e.target && e.target.nodeName == "LI") {
         var pitcherText = e.target.textContent;
-        $('#pitcherText').val(pitcherText.slice(0, pitcherText.indexOf(')')+1));
+        pitcherText = pitcherText.slice(0, pitcherText.length - 3);
+        $('#pitcherText').val(pitcherText);
         $('#pitcherListItems').css('display', 'none');
 
         // badges
         var pitcherName = $('#pitcherText').val();
-        pitcherName = pitcherName.slice(0, pitcherName.indexOf("(") - 1);
         
         var pitcher;
-        for (var i = 0; i < window.playerList.length; i++) {
-            if (pitcherName == window.playerList[i].name) {
-                pitcher = window.playerList[i];
+        for (var i = 0; i < window.allPlayers.length; i++) {
+            if (pitcherName == window.allPlayers[i].fullDisplayTitle) {
+                pitcher = window.allPlayers[i];
                 break;
             }
         }
         if (!pitcher) {
             return;
         }
+        window.currentPitcher = pitcher;
 
-        $('#pitcherTypeBadge').html(pitcher.pitcherType);
+        pitcherType = pitcher.types.pitcher;
+        $('#pitcherTypeBadge').html(window.pitcherRanges[pitcherType].fullName);
         $('#pitcherHandBadge').html(pitcher.hand);
     }
 });
 $('#batterListItems').click(function(e) {
     if (e.target && e.target.nodeName == "LI") {
         var batterText = e.target.textContent;
-        $('#batterText').val(batterText.slice(0, batterText.indexOf(')')+1));
+        batterText = batterText.slice(0, batterText.length - 3);
+        $('#batterText').val(batterText);
         $('#batterListItems').css('display', 'none');
 
         // badges
         var batterName = $('#batterText').val();
-        batterName = batterName.slice(0, batterName.indexOf("(") - 1);
         
         var batter;
-        for (var i = 0; i < window.playerList.length; i++) {
-            if (batterName == window.playerList[i].name) {
-                batter = window.playerList[i];
+        for (var i = 0; i < window.allPlayers.length; i++) {
+            if (batterName == window.allPlayers[i].fullDisplayTitle) {
+                batter = window.allPlayers[i];
                 break;
             }
         }
         if (!batter) {
             return;
         }
-        $('#batterTypeBadge').html(batter.hitterType);
+        window.currentBatter = batter;
+        
+        batterType = batter.types.batter;
+        $('#batterTypeBadge').html(window.batterRanges[batterType].fullName);
         $('#batterHandBadge').html(batter.hand);
     }
-});
-
-// different calculator tabs
-$('#playerCalcLink').click(function() {
-    $('#manualCalcLink').removeClass('active');
-    $('#manualCalcPanel').css('display', 'none');
-    $('#playerCalcLink').addClass('active');
-    $('#playerCalcPanel').css('display', '');
-});
-
-$('#manualCalcLink').click(function() {
-    $('#playerCalcLink').removeClass('active');
-    $('#playerCalcPanel').css('display', 'none');
-    $('#manualCalcLink').addClass('active');
-    $('#manualCalcPanel').css('display', '');
 });
