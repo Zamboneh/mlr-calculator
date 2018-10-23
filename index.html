@@ -89,6 +89,16 @@
           </div>
         </div>
       </div>
+      <div class="modifier-row row">
+        <div class="input-group input-group-lg mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="parkSelect">Park Modifier</label>
+          </div>
+          <select class="form-control form-control-lg" id="parkSelect">
+            <option selected>None</option>
+          </select>
+        </div>
+      </div>
       <div class="action-row row">
         <div class="action-buttons col-md-6" style="text-align: center">
           <a id="calcButton" class="btn btn-primary disabled" href="javascript:doCalc();" role="button">Calculate &raquo;</a>
@@ -98,7 +108,6 @@
         </div>
       </div>
       <!-- Range rows -->
-      <!--
       <div class="row">
         <h4>Explanation of Ranges</h4>
         <table class="table">
@@ -119,94 +128,39 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr id="rangeTable_Pitcher">
               <th scope="row">Pitcher Range</th>
-              <th scope="row">Three True Outcomes</th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <th scope="row"></th>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
-            <tr>
+            <tr id="rangeTable_Batter">
               <th scope="row">Batter Range</th>
-              <th scope="row">Some Other Type</th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <th scope="row"></th>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
-            <tr>
+            <tr id="rangeTable_Hand">
               <th scope="row">Hand Bonus</th>
-              <th scope="row">Anti-Homer</th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <th scope="row"></th>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
-            <tr class="table-primary">
+            <tr id="rangeTable_Subtotal" class="table-primary">
               <th scope="row">Subtotal</th>
               <th scope="row"></th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
-            <tr>
+            <tr id="rangeTable_Park">
               <th scope="row">Park Factor</th>
-              <th scope="row">Generic Baseball Stadium 01</th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <th scope="row"></th>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
-            <tr class="table-primary">
+            <tr id="rangeTable_Total" class="table-primary">
               <th scope="row">Final Range</th>
               <th scope="row"></th>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
-              <td>13</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
           </tbody>
         </table>
       </div>
-        -->
     </div>
     <!-- Footer -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark footer">

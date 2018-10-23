@@ -34,6 +34,24 @@ function getResult(pitcher, pitch, batter, swing) {
     console.log("Combined...");
     console.log(finalRange);
 
+    updateRangeTable('rangeTable_Subtotal', 'Subtotal', '', finalRange);
+
+    // do park factor adjustment
+    var currentPark = $('#parkSelect').val();
+    if (currentPark != "None") {
+        var factors = window.parkFactors[currentPark];
+        console.log("Park factors...");
+        console.log(factors);
+        var adjustments = doParkAdjustment(finalRange, factors.factors);
+        updateRangeTable('rangeTable_Park', 'Park Factor', currentPark, adjustments)
+        finalRange = combineRanges(finalRange, adjustments);
+    } else {
+        $('#rangeTable_Park').empty();
+        $('#rangeTable_Park').append("<th scope=\"row\">Park Factor</th><th scope=\"row\"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>")
+    }
+
+    updateRangeTable('rangeTable_Total', 'Final Range', '', finalRange);
+
     var diffCounter = diff;
     var finalResult;
     var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
@@ -51,6 +69,63 @@ function getResult(pitcher, pitch, batter, swing) {
         diff: diff,
         range: finalRange
     };
+}
+
+function doParkAdjustment(range, factors) {
+        // steps!
+        // 1. get adjusted HR, 3B, 2B, BB ranges.
+        // 2. get adjusted AVG (multiply avg factor by HR+3B+2B+1B)
+        // 3. 1B range adjustment is the difference between HR+3B+2B and AVG adjustments (i.e. XBH 13, AVG 16, add 3 to 1B.)
+        // 4. evenly distribute AVG+BB across out ranges.
+
+    console.log(range);
+    console.log(factors);
+    
+    // step 1. do XBH adjustments
+    var fields = ["HR", "3B", "2B", "BB"];
+    var adjustments = {};
+    fields.forEach(function(field) {
+        var factor = parseFloat(factors[field]);
+        var adjustment = Math.round(range[field] * factor) - range[field];
+        adjustments[field] = adjustment;
+    });
+
+    // step 2. do avg adjustment
+    var totalHitDiffs = range["HR"] + range["3B"] + range["2B"] + range["1B"];
+    var adjustment = Math.round(totalHitDiffs * factors["AVG"]) - totalHitDiffs;
+    adjustments["AVG"] = adjustment;
+
+    // step 3. do 1B adjustment based on results from 1 and 2
+    var xbhAdj = adjustments["HR"] + adjustments["3B"] + adjustments["2B"];
+    var avgAdj = adjustments["AVG"];
+    adjustments["1B"] = avgAdj - xbhAdj;
+
+    // step 4. evenly distribute lost amount to out ranges
+    var adjTotal = adjustments["HR"] + adjustments["3B"] + adjustments["2B"] + adjustments["1B"] + adjustments["BB"];
+    var startingCount = adjTotal / 5
+    if (startingCount < 0) {
+        startingCount = Math.ceil(startingCount);
+    } else {
+        startingCount = Math.floor(startingCount);
+    }
+    var remainder = Math.abs(adjTotal % 5);
+    console.log("total diff is " + adjTotal)
+    console.log("out ranges start at " + startingCount + " and will get " + remainder + " ranges with one more")
+
+    var outFields = ["FO", "K", "PO", "RGO", "LGO"];
+    outFields.forEach(function(field) {
+        adjustments[field] = -startingCount;
+        if (remainder > 0) {
+            if (adjTotal < 0) {
+                adjustments[field]++;
+            } else {
+                adjustments[field]--;
+            }
+            remainder--;
+        }
+    })
+    console.log(adjustments)
+    return adjustments;
 }
 
 function combineRanges(range1, range2) {

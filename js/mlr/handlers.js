@@ -89,6 +89,8 @@ $('#pitcherListItems').click(function(e) {
         pitcherType = pitcher.types.pitcher;
         $('#pitcherTypeBadge').html(window.pitcherRanges[pitcherType].fullName);
         $('#pitcherHandBadge').html(pitcher.hand);
+        updateRangeTable('rangeTable_Pitcher', 'Pitcher Range', window.pitcherRanges[pitcherType].fullName, window.pitcherRanges[pitcherType]);
+        updateHandTable()
     }
 });
 $('#batterListItems').click(function(e) {
@@ -116,5 +118,43 @@ $('#batterListItems').click(function(e) {
         batterType = batter.types.batter;
         $('#batterTypeBadge').html(window.batterRanges[batterType].fullName);
         $('#batterHandBadge').html(batter.hand);
+        updateRangeTable('rangeTable_Batter', 'Batter Range', window.batterRanges[batterType].fullName, window.batterRanges[batterType]);
+        updateHandTable()
     }
 });
+
+function updateHandTable() {
+    if (!window.currentBatter || !window.currentPitcher) {
+        return
+    }
+
+    if (window.currentBatter.hand == window.currentPitcher.hand) {
+        var handRange = window.handRanges[window.currentPitcher.types.bonus];
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', handRange.fullName, handRange);
+    } else {
+        zeroedRange = {
+            "HR": 0,
+            "3B": 0,
+            "2B": 0,
+            "1B": 0,
+            "BB": 0,
+            "FO": 0,
+            "K": 0,
+            "PO": 0,
+            "RGO": 0,
+            "LGO": 0
+        }
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', zeroedRange);
+    }
+}
+
+function updateRangeTable(rowId, type, title, range) {
+    var tableRow = $('#' + rowId);
+    tableRow.empty();
+    tableRow.append("<th scope=\"row\">" + type + "</th>")
+    tableRow.append("<th scope=\"row\">" + title + "</th>");
+    var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
+    fields.forEach(function(field) {
+        tableRow.append("<th>" + range[field] + "</th>");
+    });
+}

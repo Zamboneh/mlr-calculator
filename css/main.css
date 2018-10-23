@@ -21,7 +21,7 @@ body {
 
 .pitcher-box, .batter-box {
   padding: 0px 25px 0px 25px;
-  height: 160px;
+  height: 180px;
 }
 .pitcher-box {
   z-index: 4;
@@ -34,6 +34,11 @@ body {
   margin-top: 30px;
 }
 
+.modifier-row {
+  width: 50%;
+  margin: auto;
+}
+
 #pitcherTypeBadge, #pitcherHandBadge, #batterTypeBadge, #batterHandBadge {
   margin-right: 15px;
   margin-bottom: 15px;
@@ -44,7 +49,7 @@ body {
 
 .action-buttons, .result-box {
   z-index: 2;
-  height: 75px;
+  height: 140px;
 }
 
 .result-box p {
@@ -63,14 +68,6 @@ body {
 a.btn {
   z-index: 3;
   font-size: 16pt;
-}
-
-.radio-inline {
-  font-size: 16pt;
-}
-
-.radio-inline input {
-  margin-top: 10px;
 }
 
 .footer {
