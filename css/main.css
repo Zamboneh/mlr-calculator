@@ -52,8 +52,8 @@ body {
   height: 140px;
 }
 
-.result-box p {
-  font-size: 24pt;
+.result-box textarea {
+  font-size: 16pt;
 }
 
 .list-group {

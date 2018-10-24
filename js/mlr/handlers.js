@@ -123,12 +123,18 @@ $('#batterListItems').click(function(e) {
     }
 });
 
+$('#copyButton').click(function() {
+    $('#result').select();
+    document.execCommand('copy');
+    $('#resultMessage').html("Result copied to clipboard!");
+})
+
 function updateHandTable() {
     if (!window.currentBatter || !window.currentPitcher) {
         return
     }
 
-    if (window.currentBatter.hand == window.currentPitcher.hand) {
+    if (window.currentBatter.hand == window.currentPitcher.hand && window.currentPitcher.types.pitcher != "POS") {
         var handRange = window.handRanges[window.currentPitcher.types.bonus];
         updateRangeTable('rangeTable_Hand', 'Hand Bonus', handRange.fullName, handRange);
     } else {

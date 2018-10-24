@@ -86,7 +86,7 @@ function parseData() {
                 discord: playerRow[5],
                 types: {
                     batter: playerRow[6],
-                    pitcher: playerRow[7],
+                    pitcher: function(){ if (playerRow[7] != "") { return playerRow[7] } else { return "POS" }}(),
                     bonus: playerRow[8],
                 },
                 hand: playerRow[9],

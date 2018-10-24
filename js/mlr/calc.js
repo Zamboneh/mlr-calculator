@@ -23,12 +23,13 @@ function getResult(pitcher, pitch, batter, swing) {
     var pitcherRange = window.pitcherRanges[pitcher.types.pitcher];
     console.log("pitcher range...");
     console.log(pitcherRange);
-    var handRange = window.handRanges[pitcher.types.bonus];
-    console.log("hand range...");
-    console.log(handRange);
+    
 
     finalRange = combineRanges(batterRange, pitcherRange);
-    if (pitcher.hand == batter.hand) {
+    if (pitcher.hand == batter.hand && pitcher.types.pitcher != "POS") {
+        var handRange = window.handRanges[pitcher.types.bonus];
+        console.log("hand range...");
+        console.log(handRange);
         finalRange = combineRanges(finalRange, handRange);
     }
     console.log("Combined...");
@@ -158,7 +159,11 @@ function doCalc() {
     if (result == null) {
         $('#result').html("Methinks one of these players is missing a type or hand...");
     } else {
-        $('#result').html("Swing: " + swing + "  <br/>Pitch: " + pitch + "  <br/>Diff: " + result.diff + " -> " + result.result);
+        $('#result').html("Swing: " + swing + "  \nPitch: " + pitch + "  \nDiff: " + result.diff + " -> " + result.result);
+        $('#result').select();
+        document.execCommand('copy');
+        $('#result').setSelectionRange(0, 0);
+        $('#resultMessage').html("Result copied to clipboard!");
     }
 }
 

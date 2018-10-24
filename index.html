@@ -104,7 +104,15 @@
           <a id="calcButton" class="btn btn-primary disabled" href="javascript:doCalc();" role="button">Calculate &raquo;</a>
         </div>
         <div class="result-box col-md-6">
-          <p id="result">Result here.</p>
+          <div class="row">
+            <div class="col-md-6">
+              <textarea rows="3" id="result">Result here.</textarea>
+              <span id="resultMessage"></span>
+            </div>
+            <div class="col-md-6">
+              <a id="copyButton" class="btn btn-primary">Copy</a>
+            </div>
+          </div>
         </div>
       </div>
       <!-- Range rows -->
