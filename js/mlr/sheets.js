@@ -39,7 +39,7 @@ function buildSheetsURL() {
     var requestString = BASE_ROSTER_URL + "ranges=Tables!AD2:AO14&";
     requestString += "ranges=Tables!AD17:AO30&";
     requestString += "ranges=Tables!AD33:AO35&";
-    requestString += "ranges='MLR Parks'!A4:G14&";
+    requestString += "ranges='MLR Parks'!A4:G50&";
 
     var teamList = ["ARI", "BOS", "CLE", "CHC", "COL", "DET",
                     "HOU", "KCR", "LAA", "LAD", "MIA", "MIL",
