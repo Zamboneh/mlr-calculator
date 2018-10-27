@@ -161,6 +161,21 @@ function updateRangeTable(rowId, type, title, range) {
     tableRow.append("<th scope=\"row\">" + title + "</th>");
     var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
     fields.forEach(function(field) {
-        tableRow.append("<th>" + range[field] + "</th>");
+        tableRow.append("<td>" + range[field] + "</td>");
     });
+}
+
+function updateFinalTable(range) {
+    var tableRow = $('#rangeTable_TotalExpanded');
+    tableRow.empty();
+    tableRow.append("<th scope=\"row\">Expanded</th>")
+    tableRow.append("<th scope=\"row\"></th>");
+    var counter = 0;
+    var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
+    fields.forEach(function(field) {
+        var start = counter;
+        counter += range[field];
+        var end = counter - 1;
+        tableRow.append("<td>" + start + " - " + end + "</td>")
+    })
 }

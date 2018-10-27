@@ -5,7 +5,6 @@ function getDifference(pitch, swing) {
     var max = Math.max(pitch, swing);
     var min = Math.min(pitch, swing);
     var result = Math.min(max - min, 1000 - max + min);
-    console.log("Diff: " + result);
     return result;
 }
 
@@ -18,22 +17,14 @@ function getResult(pitcher, pitch, batter, swing) {
     // 4. look up diff in final range
 
     var batterRange = window.batterRanges[batter.types.batter];
-    console.log("batter range...");
-    console.log(batterRange);
     var pitcherRange = window.pitcherRanges[pitcher.types.pitcher];
-    console.log("pitcher range...");
-    console.log(pitcherRange);
     
 
     finalRange = combineRanges(batterRange, pitcherRange);
     if (pitcher.hand == batter.hand && pitcher.types.pitcher != "POS") {
         var handRange = window.handRanges[pitcher.types.bonus];
-        console.log("hand range...");
-        console.log(handRange);
         finalRange = combineRanges(finalRange, handRange);
     }
-    console.log("Combined...");
-    console.log(finalRange);
 
     updateRangeTable('rangeTable_Subtotal', 'Subtotal', '', finalRange);
 
@@ -41,8 +32,6 @@ function getResult(pitcher, pitch, batter, swing) {
     var currentPark = $('#parkSelect').val();
     if (currentPark != "None") {
         var factors = window.parkFactors[currentPark];
-        console.log("Park factors...");
-        console.log(factors);
         var adjustments = doParkAdjustment(finalRange, factors.factors);
         updateRangeTable('rangeTable_Park', 'Park Factor', currentPark, adjustments)
         finalRange = combineRanges(finalRange, adjustments);
@@ -52,6 +41,7 @@ function getResult(pitcher, pitch, batter, swing) {
     }
 
     updateRangeTable('rangeTable_Total', 'Final Range', '', finalRange);
+    updateFinalTable(finalRange);
 
     var diffCounter = diff;
     var finalResult;
@@ -59,7 +49,7 @@ function getResult(pitcher, pitch, batter, swing) {
     for (var i = 0; i < fields.length; i++) {
         var abResult = fields[i];
         diffCounter -= finalRange[abResult];
-        if (diffCounter <= 0) {
+        if (diffCounter < 0) {
             finalResult = abResult;
             break;
         }
@@ -73,15 +63,6 @@ function getResult(pitcher, pitch, batter, swing) {
 }
 
 function doParkAdjustment(range, factors) {
-        // steps!
-        // 1. get adjusted HR, 3B, 2B, BB ranges.
-        // 2. get adjusted AVG (multiply avg factor by HR+3B+2B+1B)
-        // 3. 1B range adjustment is the difference between HR+3B+2B and AVG adjustments (i.e. XBH 13, AVG 16, add 3 to 1B.)
-        // 4. evenly distribute AVG+BB across out ranges.
-
-    console.log(range);
-    console.log(factors);
-    
     // step 1. do XBH adjustments
     var fields = ["HR", "3B", "2B", "BB"];
     var adjustments = {};
@@ -110,8 +91,6 @@ function doParkAdjustment(range, factors) {
         startingCount = Math.floor(startingCount);
     }
     var remainder = Math.abs(adjTotal % 5);
-    console.log("total diff is " + adjTotal)
-    console.log("out ranges start at " + startingCount + " and will get " + remainder + " ranges with one more")
 
     var outFields = ["FO", "K", "PO", "RGO", "LGO"];
     outFields.forEach(function(field) {
@@ -125,7 +104,6 @@ function doParkAdjustment(range, factors) {
             remainder--;
         }
     })
-    console.log(adjustments)
     return adjustments;
 }
 
@@ -160,10 +138,6 @@ function doCalc() {
         $('#result').html("Methinks one of these players is missing a type or hand...");
     } else {
         $('#result').html("Swing: " + swing + "  \nPitch: " + pitch + "  \nDiff: " + result.diff + " -> " + result.result);
-        $('#result').select();
-        document.execCommand('copy');
-        $('#result').setSelectionRange(0, 0);
-        $('#resultMessage').html("Result copied to clipboard!");
     }
 }
 
