@@ -123,6 +123,70 @@ $('#batterListItems').click(function(e) {
     }
 });
 
+$('#lookupButton').click(function() {
+    window.calculatorMode = 'lookup';
+    $('#manualButton').removeClass("active");
+    $('#lookupButton').addClass("active");
+    $('#pitcherTextInput').css('display', '');
+    $('#pitcherTextManual').css('display', 'none');
+    $('#batterTextInput').css('display', '');
+    $('#batterTextManual').css('display', 'none');
+    $('#pitcherTypeBadge').css('display', '');
+    $('#pitcherHandBadge').css('display', '');
+    $('#batterTypeBadge').css('display', '');
+    $('#batterHandBadge').css('display', '');
+})
+$('#manualButton').click(function() {
+    window.calculatorMode = 'manual';
+    $('#manualButton').addClass("active");
+    $('#lookupButton').removeClass("active");
+    $('#pitcherTextInput').css('display', 'none');
+    $('#pitcherTextManual').css('display', '');
+    $('#batterTextInput').css('display', 'none');
+    $('#batterTextManual').css('display', '');
+    $('#pitcherTypeBadge').css('display', 'none');
+    $('#pitcherHandBadge').css('display', 'none');
+    $('#batterTypeBadge').css('display', 'none');
+    $('#batterHandBadge').css('display', 'none');
+})
+
+$('#pitcherTypeManual').change(function() {
+    var type = $('#pitcherTypeManual').val();
+    updateRangeTable('rangeTable_Pitcher', 'Pitcher Range', window.pitcherRanges[type].fullName, window.pitcherRanges[type])
+})
+$('#batterTypeManual').change(function() {
+    var type = $('#batterTypeManual').val();
+    updateRangeTable('rangeTable_Batter', 'Batter Range', window.batterRanges[type].fullName, window.batterRanges[type])
+})
+$('#pitcherHandManual').change(handOrBonusChanged)
+$('#batterHandManual').change(handOrBonusChanged)
+$('#pitcherBonusManual').change(handOrBonusChanged)
+
+function handOrBonusChanged() {
+    var batterHand = $('#batterHandManual').val()
+    var pitcherHand = $('#pitcherHandManual').val()
+    var bonus = $('#pitcherBonusManual').val()
+    if ((batterHand == pitcherHand) && ($('#pitcherTypeManual').val() != "POS")) {
+        // apply bonus
+        var handRange = window.handRanges[bonus];
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', handRange.fullName, handRange);
+    } else {
+        zeroedRange = {
+            "HR": 0,
+            "3B": 0,
+            "2B": 0,
+            "1B": 0,
+            "BB": 0,
+            "FO": 0,
+            "K": 0,
+            "PO": 0,
+            "RGO": 0,
+            "LGO": 0
+        }
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', zeroedRange);
+    }
+}
+
 $('#copyButton').click(function() {
     $('#result').select();
     document.execCommand('copy');

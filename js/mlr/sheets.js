@@ -66,8 +66,20 @@ function parseData() {
     // data is passed as args
 
     window.batterRanges = buildRanges(arguments[0].valueRanges[0].values);
+    Object.keys(window.batterRanges).forEach(function(rangeAbbr) {
+        var batterRange = window.batterRanges[rangeAbbr];
+        $('#batterTypeManual').append('<option value="' + rangeAbbr + '">' + batterRange.fullName + '</option>')
+    })
     window.pitcherRanges = buildRanges(arguments[0].valueRanges[1].values);
+    Object.keys(window.pitcherRanges).forEach(function(rangeAbbr) {
+        var pitcherRange = window.pitcherRanges[rangeAbbr];
+        $('#pitcherTypeManual').append('<option value="' + rangeAbbr + '">' + pitcherRange.fullName + '</option>')
+    })
     window.handRanges = buildRanges(arguments[0].valueRanges[2].values);
+    Object.keys(window.handRanges).forEach(function(rangeAbbr) {
+        var handRange = window.handRanges[rangeAbbr];
+        $('#pitcherBonusManual').append('<option value="' + rangeAbbr + '">' + handRange.fullName + '</option>')
+    })
     window.parkFactors = buildParkFactors(arguments[0].valueRanges[3].values);
 
     window.allPlayers = [];

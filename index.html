@@ -25,6 +25,16 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#">MLR Calculator: Season 3</a>
         </div>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            <li id="lookupButton" class="nav-item active">
+              <a class="nav-link" href="#">Player Lookup</a>
+            </li>
+            <li id="manualButton" class="nav-item">
+              <a class="nav-link" href="#">Manual Types</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -42,11 +52,36 @@
         <div class="pitcher-box col-md-6">
           <div id="pitcherInfo">
             <div class="row">
-              <div class="input-group input-group-lg mb-3">
+              <div id="pitcherTextInput" class="input-group input-group-lg mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Pitcher Name</span>
                 </div>
                 <input id="pitcherText" type="text" class="form-control"/>
+              </div>
+              <div id="pitcherTextManual" style="display:none">
+                <div class="input-group input-group-lg mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="pitcherTypeManual">Pitcher Type</label>
+                  </div>
+                  <select class="form-control form-control-lg" id="pitcherTypeManual">
+                    
+                  </select>
+                </div>
+                <div class="input-group input-group-lg mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="pitcherHandManual">Pitcher Hand</label>
+                  </div>
+                  <select class="form-control form-control-lg" id="pitcherHandManual">
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                  </select>
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="pitcherBonusManual">Bonus</label>
+                  </div>
+                  <select class="form-control form-control-lg" id="pitcherBonusManual">
+                    
+                  </select>
+                </div>
               </div>
               <div class="input-group input-group-lg mb-3">
                 <div class="input-group-prepend">
@@ -67,11 +102,30 @@
         <div class="batter-box col-md-6">
           <div id="batterInfo">
             <div class="row">
-              <div class="input-group input-group-lg mb-3">
+              <div id="batterTextInput" class="input-group input-group-lg mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Batter Name</span>
                 </div>
                 <input id="batterText" type="text" class="form-control"/>
+              </div>
+              <div id="batterTextManual" style="display:none">
+                <div class="input-group input-group-lg mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="batterTypeManual">Batter Type</label>
+                  </div>
+                  <select class="form-control form-control-lg" id="batterTypeManual">
+                    
+                  </select>
+                </div>
+                <div class="input-group input-group-lg mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="batterHandManual">Batter Hand</label>
+                  </div>
+                  <select class="form-control form-control-lg" id="batterHandManual">
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                  </select>
+                </div>
               </div>
               <div class="input-group input-group-lg mb-3">
                 <div class="input-group-prepend">

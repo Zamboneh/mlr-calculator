@@ -1,6 +1,7 @@
 function init() {
     // do loading indicator and load player data
     $(".loadingContainer").css("display", "block");
+    window.calculatorMode = 'lookup';
 
     getData();
 }

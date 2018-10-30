@@ -39,6 +39,10 @@ body {
   margin: auto;
 }
 
+#batterTextManual, #pitcherTextManual {
+  width: 100%;
+}
+
 #pitcherTypeBadge, #pitcherHandBadge, #batterTypeBadge, #batterHandBadge {
   margin-right: 15px;
   margin-bottom: 15px;

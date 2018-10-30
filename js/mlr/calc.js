@@ -128,9 +128,27 @@ function getAsNumber(input) {
     return null;
 }
 
-function doCalc() {    
+function doCalc() {
+    // get mode
+    var mode = window.calculatorMode;
     var pitch = parseInt($('#pitcherNumber').val());
     var swing = parseInt($('#batterNumber').val());
+
+    if (mode == 'manual') {
+        window.currentPitcher = {
+            "hand": $('#pitcherHandManual').val(),
+            "types": {
+                "pitcher": $('#pitcherTypeManual').val(),
+                "bonus": $('#pitcherBonusManual').val()
+            }
+        };
+        window.currentBatter = {
+            "hand": $('#batterHandManual').val(),
+            "types": {
+                "batter": $('#batterTypeManual').val()
+            }
+        };
+    }
 
     var result = getResult(window.currentPitcher, pitch, window.currentBatter, swing);
 
