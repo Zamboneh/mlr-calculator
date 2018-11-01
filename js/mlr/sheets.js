@@ -36,9 +36,9 @@ window.teamNames = {
 // - all team tables - <team>!A3:AM23
 
 function buildSheetsURL() {
-    var requestString = BASE_ROSTER_URL + "ranges=Tables!AD2:AO14&";
-    requestString += "ranges=Tables!AD17:AO30&";
-    requestString += "ranges=Tables!AD33:AO35&";
+    var requestString = BASE_ROSTER_URL + "ranges=Tables!AG2:AR14&";
+    requestString += "ranges=Tables!AG17:AR30&";
+    requestString += "ranges=Tables!AG33:AR35&";
     requestString += "ranges='MLR Parks'!A4:G50&";
 
     var teamList = ["ARI", "BOS", "CLE", "CHC", "COL", "DET",
