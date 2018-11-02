@@ -48,6 +48,8 @@ function buildSheetsURL() {
     for (var i = 0; i < teamList.length; i++) {
         requestString += "ranges=" + teamList[i] + "!A3:AO23&";
     }
+    // add fa tab
+    requestString += "ranges=FA!A3:AP500&"
     requestString += buildKey();
     return requestString;
 }
@@ -88,6 +90,9 @@ function parseData() {
         // get team roster
         var teamRange = arguments[0].valueRanges[i];
         var team = teamRange.range.substring(0, teamRange.range.indexOf('!'))
+        if (team == "FA") {
+            team = "UFA";
+        }
         var roster = teamRange.values;
         for (var j = 0; j < roster.length; j++) {
             var playerRow = roster[j];
