@@ -150,7 +150,7 @@ function buildParkFactors(rangeRows) {
             name: parkRow[1],
             team: parkTeamAbbr,
             factors: {
-                AVG: parkRow[2],
+                "1B": parkRow[2],
                 BB: parkRow[3],
                 "2B": parkRow[4],
                 "3B": parkRow[5],

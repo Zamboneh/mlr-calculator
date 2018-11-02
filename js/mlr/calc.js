@@ -64,7 +64,7 @@ function getResult(pitcher, pitch, batter, swing) {
 
 function doParkAdjustment(range, factors) {
     // step 1. do XBH adjustments
-    var fields = ["HR", "3B", "2B", "BB"];
+    var fields = ["HR", "3B", "2B", "1B", "BB"];
     var adjustments = {};
     fields.forEach(function(field) {
         var factor = parseFloat(factors[field]);
@@ -73,37 +73,72 @@ function doParkAdjustment(range, factors) {
     });
 
     // step 2. do avg adjustment
-    var totalHitDiffs = range["HR"] + range["3B"] + range["2B"] + range["1B"];
-    var adjustment = Math.round(totalHitDiffs * factors["AVG"]) - totalHitDiffs;
-    adjustments["AVG"] = adjustment;
+    // var totalHitDiffs = range["HR"] + range["3B"] + range["2B"] + range["1B"];
+    // var adjustment = Math.round(totalHitDiffs * factors["AVG"]) - totalHitDiffs;
+    // adjustments["AVG"] = adjustment;
 
     // step 3. do 1B adjustment based on results from 1 and 2
-    var xbhAdj = adjustments["HR"] + adjustments["3B"] + adjustments["2B"];
-    var avgAdj = adjustments["AVG"];
-    adjustments["1B"] = avgAdj - xbhAdj;
+    //var xbhAdj = adjustments["HR"] + adjustments["3B"] + adjustments["2B"];
+    //var avgAdj = adjustments["AVG"];
 
     // step 4. evenly distribute lost amount to out ranges
     var adjTotal = adjustments["HR"] + adjustments["3B"] + adjustments["2B"] + adjustments["1B"] + adjustments["BB"];
-    var startingCount = adjTotal / 5
-    if (startingCount < 0) {
-        startingCount = Math.ceil(startingCount);
-    } else {
-        startingCount = Math.floor(startingCount);
-    }
-    var remainder = Math.abs(adjTotal % 5);
+    // note: if adjTotal is negative, we need to _add_ to out ranges
+    // if adjTotal is positive, we need to _subtract_ from out ranges
 
-    var outFields = ["FO", "K", "PO", "RGO", "LGO"];
-    outFields.forEach(function(field) {
-        adjustments[field] = -startingCount;
-        if (remainder > 0) {
-            if (adjTotal < 0) {
-                adjustments[field]++;
-            } else {
-                adjustments[field]--;
-            }
-            remainder--;
+    // var startingCount = adjTotal / 5
+    // if (startingCount < 0) {
+    //     startingCount = Math.ceil(startingCount);
+    // } else {
+    //     startingCount = Math.floor(startingCount);
+    // }
+    // var remainder = Math.abs(adjTotal % 5);
+
+    // var outFields = ["FO", "K", "PO", "RGO", "LGO"];
+    // outFields.forEach(function(field) {
+    //     adjustments[field] = -startingCount;
+    //     if (remainder > 0) {
+    //         if (adjTotal < 0) {
+    //             adjustments[field]++;
+    //         } else {
+    //             adjustments[field]--;
+    //         }
+    //         remainder--;
+    //     }
+    // })
+    // return adjustments;
+
+    // loop through out ranges and divvy up remaining points equally
+    var done = false;
+    var fields = ["FO", "K", "PO", "RGO", "LGO"];
+    fields.forEach(function(field) {
+        adjustments[field] = 0;
+    });
+    var counter = 0;
+    var start = -adjTotal;
+    while (!done) {
+        var curField = fields[counter];
+        counter++;
+        if (counter == fields.length) {
+            counter = 0;
         }
-    })
+
+        if (range[curField] + adjustments[curField] <= 0) {
+            continue;
+        }
+
+        if (start > 0) {
+            start--;
+            adjustments[curField]++;
+        } else {
+            start++;
+            adjustments[curField]--;
+        }
+
+        if (start == 0) {
+            done = true;
+        }
+    }
     return adjustments;
 }
 
@@ -162,3 +197,45 @@ function doCalc() {
 // Swing: x
 // Pitch: y
 // Diff: z -> 3B
+
+function testParkFactors() {
+    // catch negative ranges for given park
+    // 1. get park factors
+    Object.keys(window.parkFactors).forEach(function(park) {
+        var chosenParkFactors = window.parkFactors[park].factors;
+        console.log("Testing " + park + "...");
+        Object.keys(window.batterRanges).forEach(function(batterType) {
+            var batterRange = window.batterRanges[batterType];
+            Object.keys(window.pitcherRanges).forEach(function(pitcherType) {
+                var pitcherRange = window.pitcherRanges[pitcherType];
+                // test without bonus, then test each bonus
+                var combined = combineRanges(batterRange, pitcherRange);
+                var combinedWithPark = combineRanges(combined, doParkAdjustment(combined, chosenParkFactors));
+                var negs = checkRangeForNegative(combinedWithPark)
+                if (negs.length > 0) {
+                    console.log("BAD -> P " + pitcherType + " vs. B " + batterType + " -> " + negs.join());
+                }
+                Object.keys(window.handRanges).forEach(function(bonusType) {
+                    var combinedWithHand = combineRanges(combined, window.handRanges[bonusType]);
+                    var combinedWithPark = combineRanges(combined, doParkAdjustment(combined, chosenParkFactors));
+                    var negs = checkRangeForNegative(combinedWithPark)
+                    if (negs.length > 0) {
+                        console.log("BAD -> P " + pitcherType + " vs. B " + batterType + " (bonus " + bonusType + ") -> " + negs.join());
+                    }
+                })
+            })
+        })
+    })
+    
+}
+
+function checkRangeForNegative(range) {
+    var negatives = [];
+    var fields = ["HR", "3B", "2B", "1B", "BB", "FO", "K", "PO", "RGO", "LGO"];
+    fields.forEach(function(field) {
+        if (range[field] < 0) {
+            negatives.push(field);
+        }
+    })
+    return negatives;
+}
