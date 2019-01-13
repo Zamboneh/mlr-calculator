@@ -1,14 +1,14 @@
 // handlers.js - all the jquery stuff that should run to set up the UI and stuff
 
 window.infieldInRange = {
-    'HR': 0,
-    '3B': 0,
-    '2B': 0,
+    'HR': '',
+    '3B': '',
+    '2B': '',
     '1B': 6,
-    'BB': 0,
-    'FO': 0,
-    'K': 0,
-    'PO': 0,
+    'BB': '',
+    'FO': '',
+    'K': '',
+    'PO': '',
     'LGO': -3,
     'RGO': -3
 }
@@ -23,6 +23,18 @@ window.zeroedRange = {
     "PO": 0,
     "RGO": 0,
     "LGO": 0
+}
+window.blankRange = {
+    "HR": '',
+    "3B": '',
+    "2B": '',
+    "1B": '',
+    "BB": '',
+    "FO": '',
+    "K": '',
+    "PO": '',
+    "RGO": '',
+    "LGO": ''
 }
 
 // number validation
@@ -204,7 +216,7 @@ $('#infieldInCheck').change(function() {
     if (this.checked) {
         updateRangeTable('rangeTable_Infield', 'Infield In', 'Yes', window.infieldInRange);
     } else {
-        updateRangeTable('rangeTable_Infield', 'Infield In', 'No', window.zeroedRange);
+        updateRangeTable('rangeTable_Infield', 'Infield In', 'No', window.blankRange);
     }
 })
 

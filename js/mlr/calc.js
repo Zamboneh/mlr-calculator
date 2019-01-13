@@ -40,6 +40,12 @@ function getResult(pitcher, pitch, batter, swing) {
         $('#rangeTable_Park').append("<th scope=\"row\">Park Factor</th><th scope=\"row\"></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>")
     }
 
+    // do infield in adjustment
+    var infieldIn = $('#infieldInCheck')[0].checked;
+    if (infieldIn) {
+        finalRange = combineRanges(finalRange, window.infieldInRange);
+    }
+
     updateRangeTable('rangeTable_Total', 'Final Range', '', finalRange);
     updateFinalTable(finalRange);
 
@@ -124,6 +130,11 @@ function combineRanges(range1, range2) {
 
 function getAsNumber(input) {
     var inputType = typeof(input);
+
+    if (input === '') {
+        return 0;
+    }
+
     if (inputType == "string") {
         return parseInt(input);
     } else if (inputType == "number") {
