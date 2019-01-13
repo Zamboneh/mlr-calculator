@@ -1,5 +1,30 @@
 // handlers.js - all the jquery stuff that should run to set up the UI and stuff
 
+window.infieldInRange = {
+    'HR': 0,
+    '3B': 0,
+    '2B': 0,
+    '1B': 6,
+    'BB': 0,
+    'FO': 0,
+    'K': 0,
+    'PO': 0,
+    'LGO': -3,
+    'RGO': -3
+}
+window.zeroedRange = {
+    "HR": 0,
+    "3B": 0,
+    "2B": 0,
+    "1B": 0,
+    "BB": 0,
+    "FO": 0,
+    "K": 0,
+    "PO": 0,
+    "RGO": 0,
+    "LGO": 0
+}
+
 // number validation
 function checkInputs() {
     var pitch = parseInt($('#pitcherNumber').val());
@@ -171,21 +196,17 @@ function handOrBonusChanged() {
         var handRange = window.handRanges[bonus];
         updateRangeTable('rangeTable_Hand', 'Hand Bonus', handRange.fullName, handRange);
     } else {
-        zeroedRange = {
-            "HR": 0,
-            "3B": 0,
-            "2B": 0,
-            "1B": 0,
-            "BB": 0,
-            "FO": 0,
-            "K": 0,
-            "PO": 0,
-            "RGO": 0,
-            "LGO": 0
-        }
-        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', zeroedRange);
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', window.zeroedRange);
     }
 }
+
+$('#infieldInCheck').change(function() {
+    if (this.checked) {
+        updateRangeTable('rangeTable_Infield', 'Infield In', 'Yes', window.infieldInRange);
+    } else {
+        updateRangeTable('rangeTable_Infield', 'Infield In', 'No', window.zeroedRange);
+    }
+})
 
 $('#copyButton').click(function() {
     $('#result').select();
@@ -202,19 +223,7 @@ function updateHandTable() {
         var handRange = window.handRanges[window.currentPitcher.types.bonus];
         updateRangeTable('rangeTable_Hand', 'Hand Bonus', handRange.fullName, handRange);
     } else {
-        zeroedRange = {
-            "HR": 0,
-            "3B": 0,
-            "2B": 0,
-            "1B": 0,
-            "BB": 0,
-            "FO": 0,
-            "K": 0,
-            "PO": 0,
-            "RGO": 0,
-            "LGO": 0
-        }
-        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', zeroedRange);
+        updateRangeTable('rangeTable_Hand', 'Hand Bonus', 'None', window.zeroedRange);
     }
 }
 
