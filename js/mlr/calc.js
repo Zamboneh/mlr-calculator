@@ -63,7 +63,7 @@ function getResult(pitcher, pitch, batter, swing) {
 }
 
 function doParkAdjustment(range, factors) {
-    // step 1. do XBH adjustments
+    // step 1. do park factor adjustments
     var fields = ["HR", "3B", "2B", "1B", "BB"];
     var adjustments = {};
     fields.forEach(function(field) {
@@ -72,41 +72,10 @@ function doParkAdjustment(range, factors) {
         adjustments[field] = adjustment;
     });
 
-    // step 2. do avg adjustment
-    // var totalHitDiffs = range["HR"] + range["3B"] + range["2B"] + range["1B"];
-    // var adjustment = Math.round(totalHitDiffs * factors["AVG"]) - totalHitDiffs;
-    // adjustments["AVG"] = adjustment;
-
-    // step 3. do 1B adjustment based on results from 1 and 2
-    //var xbhAdj = adjustments["HR"] + adjustments["3B"] + adjustments["2B"];
-    //var avgAdj = adjustments["AVG"];
-
-    // step 4. evenly distribute lost amount to out ranges
+    // step 2. evenly distribute lost amount to out ranges
     var adjTotal = adjustments["HR"] + adjustments["3B"] + adjustments["2B"] + adjustments["1B"] + adjustments["BB"];
     // note: if adjTotal is negative, we need to _add_ to out ranges
     // if adjTotal is positive, we need to _subtract_ from out ranges
-
-    // var startingCount = adjTotal / 5
-    // if (startingCount < 0) {
-    //     startingCount = Math.ceil(startingCount);
-    // } else {
-    //     startingCount = Math.floor(startingCount);
-    // }
-    // var remainder = Math.abs(adjTotal % 5);
-
-    // var outFields = ["FO", "K", "PO", "RGO", "LGO"];
-    // outFields.forEach(function(field) {
-    //     adjustments[field] = -startingCount;
-    //     if (remainder > 0) {
-    //         if (adjTotal < 0) {
-    //             adjustments[field]++;
-    //         } else {
-    //             adjustments[field]--;
-    //         }
-    //         remainder--;
-    //     }
-    // })
-    // return adjustments;
 
     // loop through out ranges and divvy up remaining points equally
     var done = false;
@@ -130,7 +99,7 @@ function doParkAdjustment(range, factors) {
         if (start > 0) {
             start--;
             adjustments[curField]++;
-        } else {
+        } else if (start < 0) {
             start++;
             adjustments[curField]--;
         }
